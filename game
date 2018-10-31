@@ -1,0 +1,64 @@
+public class game
+{
+	public static void main(String[] args)
+	{
+		Hunter h=new Hunter();
+		h.name="战士";
+		h.life=100;
+		h.isLive=true;
+		h.weapon="菜刀";
+		Monster m=new Monster();
+		m.type="普通僵尸";
+		m.life=40;
+		m.isLive=true;
+		h.fight(m);
+		m.kill(h);
+	}
+}
+
+class Hunter
+{
+	int life;
+	String name;
+	boolean isLive;
+	String weapon;
+	public void fight(Monster monster) 
+	{
+		System.out.println(name+"攻击了"+monster.type);
+		monster.injured();
+		show();
+	}
+	public void kill() 
+	{
+		System.out.println("["+name+":竟然被攻击了"+"]");
+		life-=5;
+		show();
+		}
+	
+	public void show()
+	{
+		System.out.println("["+name+",life:"+life+",weapon:"+weapon+",isLive:"+isLive+"]");	
+	}
+}
+class Monster
+{
+	int life;
+	String type;
+	boolean isLive;
+	public void injured() 
+	{
+		System.out.println("["+type+":wowowowo"+"]");
+		life-=20;
+		show();
+	
+	}
+	public void kill(Hunter hunter){
+		System.out.println(type+":wuwuwuwuaaa,扑向"+hunter.name);
+		hunter.kill();
+		show();
+	}
+	public void show()
+	{
+	System.out.println("["+type+",life:"+life+",isLive:"+isLive+"]");
+	}				
+}
