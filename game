@@ -1,33 +1,32 @@
-
+import java.util.Scanner;
 
 public class game
 {
 	public static void main(String[] args)
 	{
+		System.out.println("点击“1”攻击普通僵尸，点击“2”攻击魔法僵尸，点击“3”攻击大僵尸。");
 		Hunter h=new Hunter("阿什坎迪","金坷垃");
 		Monster m=new Monster(1);
 		Monster m2=new Monster(2);
 		Monster m3=new Monster(3);
-		h.fight(m);
-		h.fight(m);
-		h.fight(m);
-		h.fight(m);
-		h.fight(m);
-		h.fight(m);
-		h.fight(m2);
-		h.fight(m2);
-		h.fight(m2);
-		h.fight(m2);
-		h.fight(m2);
-		h.fight(m2);
-		h.fight(m3);
-		h.fight(m3);
-		h.fight(m3);
-		h.fight(m3);
-		h.fight(m3);
-		h.fight(m3);
-		h.fight(m3);
-		h.fight(m3);
+		int p=1;
+		int y=2;
+		int x=3;
+		Scanner haha=new Scanner(System.in);
+		while(haha.hasNext()) {
+		int v =haha.nextInt();
+		if(v==p)
+		{
+			h.fight(m);
+		}else if(v==y)
+		{
+			h.fight(m2);
+		}else if(v==x)
+		{
+			h.fight(m3);
+		}
+		
+	    }
 	}
 }
 class Hunter
