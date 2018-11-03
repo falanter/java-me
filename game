@@ -1,64 +1,202 @@
+
+
 public class game
 {
 	public static void main(String[] args)
 	{
-		Hunter h=new Hunter();
-		h.name="战士";
-		h.life=100;
-		h.isLive=true;
-		h.weapon="菜刀";
-		Monster m=new Monster();
-		m.type="普通僵尸";
-		m.life=40;
-		m.isLive=true;
+		Hunter h=new Hunter("阿什坎迪","金坷垃");
+		Monster m=new Monster(1);
+		Monster m2=new Monster(2);
+		Monster m3=new Monster(3);
 		h.fight(m);
-		m.kill(h);
+		h.fight(m);
+		h.fight(m);
+		h.fight(m);
+		h.fight(m);
+		h.fight(m);
+		h.fight(m2);
+		h.fight(m2);
+		h.fight(m2);
+		h.fight(m2);
+		h.fight(m2);
+		h.fight(m2);
+		h.fight(m3);
+		h.fight(m3);
+		h.fight(m3);
+		h.fight(m3);
+		h.fight(m3);
+		h.fight(m3);
+		h.fight(m3);
+		h.fight(m3);
+	}
+}
+class Hunter
+{
+	String name;
+	int life;
+	int maxLife;
+	int curLife;
+	boolean isLive;
+	String weapon;
+	int attack;
+	int defend;
+	int level;
+	int exp;
+
+	public Hunter(String name,String weapon) {
+		this.name=name;
+		this.weapon=weapon;
+		maxLife=100;
+		curLife=maxLife;
+		isLive=true;
+		attack=90;
+		defend=5;
+		level=1;
+		exp=0;
+		
+	}
+	public void fight(Monster monster) 
+	{
+		if(!isLive) {
+			return;
+		}
+		if(!monster.isLive) {
+			return;
+		}
+		System.out.println(name+"挥舞着"+weapon+"攻击了"+monster.type);
+		monster.injured(this);
+		show();
+	
+	}
+	public void kill(Monster mon) 
+	{
+		System.out.println("["+name+":竟然被攻击了"+"]");
+		int lostLife=mon.attack-this.defend;
+		int lostBasicLife=7;
+		if(lostLife<=0) {
+			curLife-=lostBasicLife;
+		}else {
+			curLife-=(lostLife+lostBasicLife);
+		}
+		
+		if(curLife<=0) {
+			dead();
+			return;
+		}
+		
+		}
+	public void dead() {
+		isLive=false;
+		System.out.println(name+":noooooooo!");
+		System.out.println("gameover");
+		life=0;
+	}
+	public void expAdd(Monster monster) {
+		this.exp+=monster.maxLife;
+		int needExp=0;
+		for(int i=1;i<=level;i++) {
+			needExp+=i*50;
+		}
+		if(exp>=needExp) {
+			this.upgrade();
+		}
+	}
+	public void upgrade() {
+		System.out.println("当当当！"+name+"level up!");
+		attack+=4;
+		defend+=3;
+		maxLife+=70;
+		curLife=maxLife;
+		level+=1;
+	}
+	public void show()
+	{
+		System.out.println("["+name+",life:"+",curLife:"+curLife+",maxLife:"+maxLife+",attack:"+attack+",defend:"+",weapon:"+weapon+",exp:"+exp+",level:"+level+",isLive:"+isLive+"]");	
 	}
 }
 
-class Hunter
-{
-	int life;
-	String name;
-	boolean isLive;
-	String weapon;
-	public void fight(Monster monster) 
-	{
-		System.out.println(name+"攻击了"+monster.type);
-		monster.injured();
-		show();
-	}
-	public void kill() 
-	{
-		System.out.println("["+name+":竟然被攻击了"+"]");
-		life-=5;
-		show();
-		}
-	
-	public void show()
-	{
-		System.out.println("["+name+",life:"+life+",weapon:"+weapon+",isLive:"+isLive+"]");	
-	}
-}
 class Monster
 {
 	int life;
 	String type;
 	boolean isLive;
-	public void injured() 
+	int attack;
+	int defend;
+	int maxLife;
+	int curLife;
+	public Monster(int mt) {
+		if(mt==1) {
+			type="普通僵尸";
+			maxLife=200;
+			isLive=true;
+			attack=15;
+			defend=8;
+		}
+		if(mt==2) {
+			type="魔法僵尸";
+			maxLife=300;
+			isLive=true;
+			attack=25;
+			defend=4;
+		}
+		if(mt==3) {
+			type="钢盔僵尸";
+			maxLife=500;
+			isLive=true;
+			attack=15;
+			defend=12;
+		}
+		if(mt==3) {
+			type="大僵尸";
+			maxLife=500;
+			isLive=true;
+			attack=25;
+			defend=22;
+		}
+		curLife=maxLife;
+	}
+	public void injured(Hunter hunter) 
 	{
 		System.out.println("["+type+":wowowowo"+"]");
-		life-=20;
+		int lostLife=hunter.attack-this.defend;
+		int lostBasicLife=7;
+		if(lostLife<=0) {
+			curLife-=lostBasicLife;
+		}else {
+		curLife-=(lostLife+lostBasicLife);
+		}
+		if(curLife<=0) {
+			dead(hunter);
+			return;
+		}
 		show();
+		kill(hunter);
+	}
 	
-	}
-	public void kill(Hunter hunter){
+	public void kill(Hunter hunter)
+	{
+		if(!isLive) 
+		{
+			return;
+		}
+		if(!hunter.isLive) {
+			return;
+		}
 		System.out.println(type+":wuwuwuwuaaa,扑向"+hunter.name);
-		hunter.kill();
-		show();
+		hunter.kill(this);
+		show();		
+		
 	}
+	public void dead(Hunter hunter) {
+		System.out.println("["+type+":aaaaaa"+"]");
+		isLive=false;
+		life=0;
+		hunter.expAdd(this);
+		return;
+		}
+		
 	public void show()
 	{
-	System.out.println("["+type+",life:"+life+",isLive:"+isLive+"]");
+	System.out.println("["+type+",maxLife:"+maxLife+",curLife:"+curLife+",isLive:"+isLive+"]");
 	}				
 }
